@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>canvas { width: 100%; height: 100%;}</style>
+	</head>
+	<body>
+		<script src="./three.min.js"></script>
+		<script>
+
+		var camera, scene, renderer;
+		var mesh, animation;
+		var prevTime = Date.now();
+
+
+		var init = function () {
+
+			// Scene
+			scene = new THREE.Scene();
+
+			// Mesh
+			var loader = new THREE.JSONLoader(true);
+			loader.load( "./horse.js", function(geometry) {
+
+				var material = new THREE.MeshLambertMaterial({ color: 0x606060, morphTargets: true });
+
+				mesh = new THREE.Mesh(geometry, material);
+
+				mesh.scale.set(1.5, 1.5, 1.5);
+				scene.add(mesh);
+
+				animation = new THREE.MorphAnimation(mesh);
+				animation.play();
+
+			});
+
+			// Camera
+			camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 10000);
+			camera.target = new THREE.Vector3(0, 150, 0);
+			camera.position.y = 150;
+			camera.position.x = 400;
+			camera.position.z = 800;
+
+
+			// Light
+			var light = new THREE.DirectionalLight(0xffffff, 2);
+			light.position.set(1, 1, 1).normalize();
+			scene.add(light);
+
+
+			// Renderer
+			renderer = new THREE.WebGLRenderer();
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			renderer.setClearColor(0xffffff);
+
+
+			// Put stuff in DOM
+			document.body.appendChild(renderer.domElement);
+		}
+
+		var render = function () {
+			
+			//requestAnimationFrame( render );
+
+			camera.lookAt(camera.target);
+			renderer.render(scene, camera);
+
+			var time = Date.now();
+			animation.update(time - prevTime);
+			prevTime = time;
+		};
+
+		var animate = function () {
+			requestAnimationFrame( animate );
+			render();
+		};
+		
+		init();
+		animate();
+
+		</script>
+	</body>
+</html>
