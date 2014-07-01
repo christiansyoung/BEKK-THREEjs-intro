@@ -56,10 +56,11 @@
 			// Put stuff in DOM
 			document.body.appendChild(renderer.domElement);
 		}
+		
 
 		var render = function () {
 			
-			//requestAnimationFrame( render );
+			requestAnimationFrame( render );
 
 			camera.lookAt(camera.target);
 			renderer.render(scene, camera);
@@ -68,14 +69,9 @@
 			animation.update(time - prevTime);
 			prevTime = time;
 		};
-
-		var animate = function () {
-			requestAnimationFrame( animate );
-			render();
-		};
 		
 		init();
-		animate();
+		render();
 
 		</script>
 	</body>
