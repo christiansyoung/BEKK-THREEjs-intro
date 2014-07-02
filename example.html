@@ -9,8 +9,6 @@
 
 		var camera, scene, renderer;
 		var mesh, animation;
-		var prevTime = Date.now();
-
 
 		var init = function () {
 
@@ -27,18 +25,14 @@
 
 				mesh.scale.set(1.5, 1.5, 1.5);
 				scene.add(mesh);
-
-				animation = new THREE.MorphAnimation(mesh);
-				animation.play();
-
 			});
 
 			// Camera
 			camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 1, 10000);
-			camera.target = new THREE.Vector3(0, 150, 0);
 			camera.position.y = 150;
 			camera.position.x = 400;
 			camera.position.z = 800;
+			camera.target = new THREE.Vector3(0, 150, 0);
 
 
 			// Light
@@ -56,18 +50,14 @@
 			// Put stuff in DOM
 			document.body.appendChild(renderer.domElement);
 		}
-		
+
 
 		var render = function () {
-			
-			requestAnimationFrame( render );
 
 			camera.lookAt(camera.target);
 			renderer.render(scene, camera);
 
-			var time = Date.now();
-			animation.update(time - prevTime);
-			prevTime = time;
+			requestAnimationFrame(render);
 		};
 		
 		init();
